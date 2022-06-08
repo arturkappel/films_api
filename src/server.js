@@ -3,14 +3,14 @@ const express = require("express")
 const routes = require("./routes")
 const sqliteConnection = require("./database");
 const AppError = require("./utils/AppError");
-
+const uploadConfig = require("./configs/upload")
 
 sqliteConnection().then(db => db).catch(error => console.error(error));
 
 const app = express()
 
 app.use(express.json()) //para ler o arquivo json
-
+app.use("/files", express.static(uploadConfig.UPLOADS_FOLDER))
 app.use(routes)
 
 app.use((error,request, response, next) => {
